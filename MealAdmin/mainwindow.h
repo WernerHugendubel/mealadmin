@@ -56,6 +56,11 @@ private:
     QSqlQueryModel * userModel;
     QSqlQueryModel * bedModel;
 
+    QSqlQueryModel * patientModel;
+
+    QSqlQueryModel * menuModelMittag;
+    QSqlQueryModel * menuModelAbend;
+
 
 };
 

@@ -301,10 +301,10 @@
      <string>Admin</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="lineEditPatient">
     <property name="geometry">
      <rect>
-      <x>570</x>
+      <x>470</x>
       <y>90</y>
       <width>113</width>
       <height>27</height>
@@ -314,7 +314,7 @@
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>470</x>
+      <x>370</x>
       <y>90</y>
       <width>81</width>
       <height>31</height>
@@ -324,20 +324,20 @@
      <string>Patient:</string>
     </property>
    </widget>
-   <widget class="QListView" name="listView">
+   <widget class="QListView" name="listViewMittag">
     <property name="geometry">
      <rect>
-      <x>200</x>
-      <y>230</y>
+      <x>80</x>
+      <y>220</y>
       <width>211</width>
       <height>121</height>
      </rect>
     </property>
    </widget>
-   <widget class="QListView" name="listView_2">
+   <widget class="QListView" name="listViewAbend">
     <property name="geometry">
      <rect>
-      <x>700</x>
+      <x>550</x>
       <y>220</y>
       <width>211</width>
       <height>121</height>
@@ -367,6 +367,39 @@
      <rect>
       <x>540</x>
       <y>0</y>
+      <width>201</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+     </font>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelBed_4">
+    <property name="geometry">
+     <rect>
+      <x>650</x>
+      <y>100</y>
+      <width>101</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Patient:</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="comboBoxPatient">
+    <property name="geometry">
+     <rect>
+      <x>770</x>
+      <y>90</y>
       <width>201</width>
       <height>31</height>
      </rect>

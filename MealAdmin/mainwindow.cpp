@@ -31,19 +31,6 @@ MainWindow::MainWindow(QWidget *parent) :
        qDebug() << "No Database Opened!";
     }
 
-
-
-    // 16.04. wegen Fehler QModelIndex mit QSqlQueryModel;
-
-   /* patientModel = new QSqlTableModel(this);
-    patientModel->setTable("patient");
-    patientModel->select();
-    ui->comboBoxPatient->setModel(patientModel);
-*/
-    //
-
-
-
     // new 16.04
     // first floor, then Bed (combo) --> patient -textfield.
     //
@@ -54,49 +41,59 @@ MainWindow::MainWindow(QWidget *parent) :
     // Spalte 1 ausblenden, nur Namen zeigen
     ui->comboBoxFloor->setModelColumn(1);
 
-
      qDebug() << "qryModelFloor: " << qryModelFloor->record(0).value("floor_id").toInt();
+
+     // braucht es trotz on_activated noch!!! bo...
 
      QModelIndex indexId = qryModelFloor->index(0,0);
      QString id = indexId.data().toString();
      qDebug() << "Index: 0,0 floor: " << id;
 
 
+     // now set filter from floor to bed!
+     // onIndexChanged wird das gemacht
 
-    // sonst Fehler im Slot!! on index changed...
-    //QModelIndex FloorId = qryModelFloor->index(0,0);
-
-    // now set filter from floor to bed!
     // first: get the bed-id
-
     // get the values for menu_id, menu_id_ev from patient_menu
-
 
     userModel =new QSqlQueryModel();
     bedModel =new QSqlQueryModel();
+    patientModel = new QSqlQueryModel();
+
+    menuModelMittag = new QSqlQueryModel();
+    menuModelAbend = new QSqlQueryModel();
+
 
     QSqlQuery* qryUser = new QSqlQuery(db);
     QSqlQuery* qryBed = new QSqlQuery(db);
+    QSqlQuery* qryPatient = new QSqlQuery(db);
 
     // combobox source is id + lastname
     qryUser->prepare("select employee_id || '-' || lastname || ' ' ||firstname from employee");
 
-    //qryBed->prepare("select bed_id || '-' || description from bed");
     qryBed->prepare("select bed_id,description from bed");
 
+    qryPatient->prepare("select patient_id, lastname,firstname from patient");
     qryUser->exec();
     qryBed->exec();
+    qryPatient->exec();
 
     userModel->setQuery(*qryUser);
     bedModel->setQuery(*qryBed);
+    patientModel->setQuery(*qryPatient);
 
     bedModel->setQuery("select bed_id,description from bed where floor_id="+id);
 
 
     ui->comboBoxUser->setModel(userModel);
+
     ui->comboBoxBed->setModel(bedModel);
 
     ui->comboBoxBed->setModelColumn(1);
+
+    ui->comboBoxPatient->setModel(patientModel);
+    ui->comboBoxPatient->setModelColumn(1);
+
 
     qDebug() << (userModel->rowCount());
     qDebug() << (bedModel->rowCount());
