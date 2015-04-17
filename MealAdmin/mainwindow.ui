@@ -73,8 +73,8 @@
    <widget class="QComboBox" name="comboBoxBed">
     <property name="geometry">
      <rect>
-      <x>540</x>
-      <y>0</y>
+      <x>150</x>
+      <y>90</y>
       <width>201</width>
       <height>31</height>
      </rect>
@@ -88,8 +88,8 @@
    <widget class="QLabel" name="labelBed">
     <property name="geometry">
      <rect>
-      <x>430</x>
-      <y>10</y>
+      <x>40</x>
+      <y>100</y>
       <width>101</width>
       <height>21</height>
      </rect>
@@ -119,8 +119,8 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>90</y>
+      <x>40</x>
+      <y>180</y>
       <width>161</width>
       <height>17</height>
      </rect>
@@ -132,8 +132,8 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>130</y>
+      <x>540</x>
+      <y>170</y>
       <width>101</width>
       <height>17</height>
      </rect>
@@ -145,8 +145,8 @@
    <widget class="QComboBox" name="comboBoxMenuMid">
     <property name="geometry">
      <rect>
-      <x>204</x>
-      <y>80</y>
+      <x>194</x>
+      <y>170</y>
       <width>131</width>
       <height>27</height>
      </rect>
@@ -155,8 +155,8 @@
    <widget class="QComboBox" name="comboBoxMenuEv">
     <property name="geometry">
      <rect>
-      <x>204</x>
-      <y>120</y>
+      <x>694</x>
+      <y>160</y>
       <width>131</width>
       <height>27</height>
      </rect>
@@ -165,8 +165,8 @@
    <widget class="QCheckBox" name="checkBox">
     <property name="geometry">
      <rect>
-      <x>340</x>
-      <y>80</y>
+      <x>330</x>
+      <y>170</y>
       <width>151</width>
       <height>22</height>
      </rect>
@@ -178,8 +178,8 @@
    <widget class="QCheckBox" name="checkBox_2">
     <property name="geometry">
      <rect>
-      <x>340</x>
-      <y>120</y>
+      <x>830</x>
+      <y>160</y>
       <width>121</width>
       <height>22</height>
      </rect>
@@ -188,34 +188,11 @@
      <string>bestellt/ord.</string>
     </property>
    </widget>
-   <widget class="QTableView" name="tableViewPatientDietary_req">
-    <property name="geometry">
-     <rect>
-      <x>545</x>
-      <y>100</y>
-      <width>331</width>
-      <height>192</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>550</x>
-      <y>80</y>
-      <width>161</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Attribute/aggettivo:</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="pushButton_3">
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>190</y>
+      <x>680</x>
+      <y>440</y>
       <width>241</width>
       <height>61</height>
      </rect>
@@ -232,8 +209,8 @@
    <widget class="QPushButton" name="pushButton_4">
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>260</y>
+      <x>680</x>
+      <y>510</y>
       <width>241</width>
       <height>61</height>
      </rect>
@@ -258,19 +235,6 @@
     </property>
     <property name="text">
      <string>Supplier</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButtonPatientDietary_req_newRecord">
-    <property name="geometry">
-     <rect>
-      <x>670</x>
-      <y>290</y>
-      <width>99</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>New Record</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="lineEditDate">
@@ -309,8 +273,8 @@
    <widget class="QPushButton" name="pushButtonSaveOrder">
     <property name="geometry">
      <rect>
-      <x>270</x>
-      <y>340</y>
+      <x>540</x>
+      <y>440</y>
       <width>111</width>
       <height>41</height>
      </rect>
@@ -327,14 +291,90 @@
    <widget class="QPushButton" name="pushButton_admin">
     <property name="geometry">
      <rect>
-      <x>370</x>
-      <y>500</y>
+      <x>60</x>
+      <y>490</y>
       <width>99</width>
       <height>27</height>
      </rect>
     </property>
     <property name="text">
      <string>Admin</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit">
+    <property name="geometry">
+     <rect>
+      <x>570</x>
+      <y>90</y>
+      <width>113</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>90</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Patient:</string>
+    </property>
+   </widget>
+   <widget class="QListView" name="listView">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>230</y>
+      <width>211</width>
+      <height>121</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QListView" name="listView_2">
+    <property name="geometry">
+     <rect>
+      <x>700</x>
+      <y>220</y>
+      <width>211</width>
+      <height>121</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelBed_3">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>10</y>
+      <width>81</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Floor:</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="comboBoxFloor">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>0</y>
+      <width>201</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+     </font>
     </property>
    </widget>
   </widget>

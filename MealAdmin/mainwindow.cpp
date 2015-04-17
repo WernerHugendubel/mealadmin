@@ -12,7 +12,6 @@
 #include <QTableView>
 #include <login.h>
 
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -33,20 +32,57 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
 
+
+    // 16.04. wegen Fehler QModelIndex mit QSqlQueryModel;
+
+   /* patientModel = new QSqlTableModel(this);
+    patientModel->setTable("patient");
+    patientModel->select();
+    ui->comboBoxPatient->setModel(patientModel);
+*/
+    //
+
+
+
+    // new 16.04
+    // first floor, then Bed (combo) --> patient -textfield.
+    //
+
+    qryModelFloor =new QSqlQueryModel();
+    qryModelFloor->setQuery("SELECT floor_id, floor FROM floor");
+    ui->comboBoxFloor->setModel(qryModelFloor);
+    // Spalte 1 ausblenden, nur Namen zeigen
+    ui->comboBoxFloor->setModelColumn(1);
+
+
+     qDebug() << "qryModelFloor: " << qryModelFloor->record(0).value("floor_id").toInt();
+
+     QModelIndex indexId = qryModelFloor->index(0,0);
+     QString id = indexId.data().toString();
+     qDebug() << "Index: 0,0 floor: " << id;
+
+
+
+    // sonst Fehler im Slot!! on index changed...
+    //QModelIndex FloorId = qryModelFloor->index(0,0);
+
+    // now set filter from floor to bed!
     // first: get the bed-id
 
     // get the values for menu_id, menu_id_ev from patient_menu
 
 
-    QSqlQueryModel * userModel =new QSqlQueryModel();
-    QSqlQueryModel * bedModel =new QSqlQueryModel();
+    userModel =new QSqlQueryModel();
+    bedModel =new QSqlQueryModel();
 
     QSqlQuery* qryUser = new QSqlQuery(db);
     QSqlQuery* qryBed = new QSqlQuery(db);
 
     // combobox source is id + lastname
     qryUser->prepare("select employee_id || '-' || lastname || ' ' ||firstname from employee");
-    qryBed->prepare("select bed_id || '-' || description from bed");
+
+    //qryBed->prepare("select bed_id || '-' || description from bed");
+    qryBed->prepare("select bed_id,description from bed");
 
     qryUser->exec();
     qryBed->exec();
@@ -54,8 +90,13 @@ MainWindow::MainWindow(QWidget *parent) :
     userModel->setQuery(*qryUser);
     bedModel->setQuery(*qryBed);
 
+    bedModel->setQuery("select bed_id,description from bed where floor_id="+id);
+
+
     ui->comboBoxUser->setModel(userModel);
     ui->comboBoxBed->setModel(bedModel);
+
+    ui->comboBoxBed->setModelColumn(1);
 
     qDebug() << (userModel->rowCount());
     qDebug() << (bedModel->rowCount());
@@ -100,15 +141,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
     tableViewPatientDietary_req = new QTableView;
 
-    ui->tableViewPatientDietary_req ->setSelectionBehavior(QAbstractItemView::SelectRows);
-    ui->tableViewPatientDietary_req ->resizeColumnsToContents();
+    //ui->tableViewPatientDietary_req ->setSelectionBehavior(QAbstractItemView::SelectRows);
+    //ui->tableViewPatientDietary_req ->resizeColumnsToContents();
 
-    ui->tableViewPatientDietary_req ->setModel(modelPatientDietary_req );
+    //ui->tableViewPatientDietary_req ->setModel(modelPatientDietary_req );
 
     // error was missing ui-> !!!
-    ui->tableViewPatientDietary_req ->setColumnHidden(0, true);
+    //ui->tableViewPatientDietary_req ->setColumnHidden(0, true);
 
-    ui->tableViewPatientDietary_req->setItemDelegate(new QSqlRelationalDelegate(tableViewPatientDietary_req));
+    //ui->tableViewPatientDietary_req->setItemDelegate(new QSqlRelationalDelegate(tableViewPatientDietary_req));
 
    // ui->lineEditUser->setText("");
 
@@ -175,24 +216,20 @@ void MainWindow::on_pushButton_Supplier_clicked()
     DialogSupplier mDialog;
     mDialog.setModal(true);
     mDialog.exec();
-
-
 }
 
 void MainWindow::on_pushButtonPatientDietary_req_newRecord_clicked()
 {
     int row = modelPatientDietary_req->rowCount();
-
     modelPatientDietary_req->insertRow(row);
     // access item in index(row,column,[parentindex])
     // 1 = meal
     QModelIndex index = modelPatientDietary_req->index(row,1, QModelIndex());
-
     tableViewPatientDietary_req->setCurrentIndex(index);
-
     modelPatientDietary_req->submit();
     modelPatientDietary_req->submitAll();
 }
+
 
 void MainWindow::on_pushButtonSaveOrder_clicked()
 {
@@ -202,45 +239,49 @@ void MainWindow::on_pushButtonSaveOrder_clicked()
      QString st = ui->comboBoxBed->currentText();
      qDebug()<< st.indexOf("-");
      qDebug() << "Zahl : " << st.mid(0,1).toInt();
-
      qDebug() << ui->comboBoxMenuEv->currentText();
      qDebug() << ui->lineEditDate->text();
      qDebug() << ui->comboBoxMenuEv->currentText();
      qDebug() << ui->comboBoxBed->currentText() << " Bed:";
-
-
 }
-
-/*
- *
- *
-void MainWindow::showEvent( QShowEvent *event )
-{
-    // call whatever your base class is!
-    QDialog::showEvent( event );
-    if( event->spontaneous() )
-        return;
-
-    if(isInitialized)
-        return;
-
-    // do your init stuff here
-
-    isInitialized = true;
-}
-*/
 
 void MainWindow::on_pushButton_admin_clicked()
 {
     DialogAdmin aDialog;
     aDialog.setModal(true);
     aDialog.exec();
+}
+
+/*
+    QModelIndex indexId = qryModelFloor->index(index,0);
+    QString id = indexId.data().toString();
+    qDebug() << "Index: floor: " << id;
+*/
+
+void MainWindow::on_comboBoxFloor_currentIndexChanged(int index)
+{
+
+  indexId = qryModelFloor->index(index,0);
+  QString id = indexId.data().toString();
+  qDebug() << "id_indexId.data: "<< id;
+
+  if (index > 0) { qDebug() << "qryModelFloor: " << qryModelFloor->record(index).value("floor_id").toInt();
+      bedModel->setQuery("select bed_id,description from bed where floor_id="+id);
+  }
 
 }
 
-void MainWindow::on_comboBoxBed_currentIndexChanged(int index)
+
+void MainWindow::on_comboBoxFloor_activated(int index)
 {
-    qDebug() << "change!";
-    //modelPatientDietary_req ->
+    indexId = qryModelFloor->index(index,0);
+    QString id = indexId.data().toString();
+    qDebug() << "on_activated: " << "id_indexId.data: "<< id;
+
+    if (index == 0) { qDebug() << "qryModelFloor: " << qryModelFloor->record(index).value("floor_id").toInt();
+        bedModel->setQuery("select bed_id,description from bed where floor_id="+id);
+    }
+
+
 
 }

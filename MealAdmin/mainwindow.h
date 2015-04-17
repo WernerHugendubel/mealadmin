@@ -7,6 +7,8 @@
 #include <QDialog>
 #include "QTableView"
 #include "QSqlRelationalTableModel"
+#include <QModelIndex>
+
 
 namespace Ui {
 class MainWindow;
@@ -35,14 +37,25 @@ private slots:
 
     void on_pushButton_admin_clicked();
 
-    void on_comboBoxBed_currentIndexChanged(int index);
+    void on_comboBoxFloor_currentIndexChanged(int index);
+
+    void on_comboBoxFloor_activated(int index);
 
 private:
+
     Ui::MainWindow *ui;
 
     QSqlRelationalTableModel *modelPatientDietary_req ;
 
     QTableView *tableViewPatientDietary_req;
+
+    QSqlQueryModel *qryModelFloor;
+
+    QModelIndex indexId;
+
+    QSqlQueryModel * userModel;
+    QSqlQueryModel * bedModel;
+
 
 };
 

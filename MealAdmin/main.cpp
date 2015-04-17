@@ -36,7 +36,6 @@ int main(int argc, char *argv[])
     // then Login !!
 
 
-
     MainWindow mainWindow;
     Login passwordWindow;
 
@@ -44,10 +43,10 @@ int main(int argc, char *argv[])
     passwordWindow.setModal(true);
     passwordWindow.exec();
     mainWindow.show();
-
-    //DialogBed dialogBed;
-    //dialogBed.show();
-
+/*
+    DialogBed dialogBed;
+    dialogBed.show();
+*/
 
     return a.exec();
 }
