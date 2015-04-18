@@ -45,6 +45,8 @@ private slots:
 
     void on_comboBoxMenuEv_activated(int index);
 
+    void on_comboBoxBed_activated(int index);
+
 private:
 
     Ui::MainWindow *ui;

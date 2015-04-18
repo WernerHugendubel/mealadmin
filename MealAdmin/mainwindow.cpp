@@ -73,8 +73,8 @@ MainWindow::MainWindow(QWidget *parent) :
     // Auswahl für ComboboxPatient
     patientModel = new QSqlQueryModel();
     QSqlQuery* qryPatient = new QSqlQuery(db);
-    qryPatient->prepare("select patient_id, lastname,firstname from patient");
-    patientModel->setQuery(*qryPatient);
+    // bed_id wegen select last,first from patient where bed_id = comboBoxBed...
+    patientModel->setQuery("select patient_id, lastname,firstname,bed_id from patient" );
 
     // Auswahl für ComboBoxMid
     //menuModelMittag = new QSqlQueryModel();
@@ -315,4 +315,17 @@ void MainWindow::on_comboBoxMenuEv_activated(int index)
     QString id = indexId.data().toString();
     // MenuID, now select dishes from
     listEvModel->setQuery("select dish.meal from menu_dish,dish where menu_dish.dish_id = dish.dish_id and menu_dish.menu_id = "+id);
+}
+
+void MainWindow::on_comboBoxBed_activated(int index)
+{
+    // index,0 ist bed_id
+    QModelIndex indexId = bedModel->index(index,0);
+    QString id = indexId.data().toString();
+    patientModel->setQuery("select patient_id, lastname,firstname,bed_id from patient where bed_id = "+id );
+    QModelIndex lastnameId = patientModel->index(index,1);
+    //qDebug() << "patient: " << lastnameId.data().toString();
+    ui->lineEditPatient->setText(lastnameId.data().toString());
+
+
 }
