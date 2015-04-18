@@ -44,53 +44,51 @@ MainWindow::MainWindow(QWidget *parent) :
      qDebug() << "qryModelFloor: " << qryModelFloor->record(0).value("floor_id").toInt();
 
      // braucht es trotz on_activated noch!!! bo...
-
+     // hole Element an Stelle 0,0 (zeile, spalte) floor_id
      QModelIndex indexId = qryModelFloor->index(0,0);
      QString id = indexId.data().toString();
      qDebug() << "Index: 0,0 floor: " << id;
 
-
      // now set filter from floor to bed!
      // onIndexChanged wird das gemacht
-
     // first: get the bed-id
     // get the values for menu_id, menu_id_ev from patient_menu
 
-    userModel =new QSqlQueryModel();
+     // braucht es eigentlich noch nicht...
+     // user der sich anmeldet und die Daten eingibt!
+     // nurse
+     userModel =new QSqlQueryModel();
+     QSqlQuery* qryUser = new QSqlQuery(db);
+     // combobox source is id + lastname
+     qryUser->prepare("select employee_id || '-' || lastname || ' ' ||firstname from employee");
+     userModel->setQuery(*qryUser);
+
+    // Auswahl für ComboBoxBed
     bedModel =new QSqlQueryModel();
-    patientModel = new QSqlQueryModel();
-
-    menuModelMittag = new QSqlQueryModel();
-    menuModelAbend = new QSqlQueryModel();
-
-
-    QSqlQuery* qryUser = new QSqlQuery(db);
     QSqlQuery* qryBed = new QSqlQuery(db);
-    QSqlQuery* qryPatient = new QSqlQuery(db);
-
-    // combobox source is id + lastname
-    qryUser->prepare("select employee_id || '-' || lastname || ' ' ||firstname from employee");
-
     qryBed->prepare("select bed_id,description from bed");
+    bedModel->setQuery(*qryBed);
+    bedModel->setQuery("select bed_id,description from bed where floor_id="+id);
 
+    // Auswahl für ComboboxPatient
+    patientModel = new QSqlQueryModel();
+    QSqlQuery* qryPatient = new QSqlQuery(db);
     qryPatient->prepare("select patient_id, lastname,firstname from patient");
+    patientModel->setQuery(*qryPatient);
+
+    // Auswahl für ComboBoxMid
+    //menuModelMittag = new QSqlQueryModel();
+    // könnte das nicht nur eine sein? Wenn das Menü sich nicht ändert??
+    // Auswahl für ComboboxEv
+    //menuModelAbend = new QSqlQueryModel();
+
     qryUser->exec();
     qryBed->exec();
     qryPatient->exec();
 
-    userModel->setQuery(*qryUser);
-    bedModel->setQuery(*qryBed);
-    patientModel->setQuery(*qryPatient);
-
-    bedModel->setQuery("select bed_id,description from bed where floor_id="+id);
-
-
     ui->comboBoxUser->setModel(userModel);
-
     ui->comboBoxBed->setModel(bedModel);
-
     ui->comboBoxBed->setModelColumn(1);
-
     ui->comboBoxPatient->setModel(patientModel);
     ui->comboBoxPatient->setModelColumn(1);
 
@@ -98,26 +96,58 @@ MainWindow::MainWindow(QWidget *parent) :
     qDebug() << (userModel->rowCount());
     qDebug() << (bedModel->rowCount());
 
-    // Menu select 30.12
-    QSqlQueryModel * menuMidModel =new QSqlQueryModel();
-    QSqlQueryModel * menuEvModel =new QSqlQueryModel();
-
-    QSqlQuery* qryMenuMid = new QSqlQuery(db);
-    QSqlQuery* qryMenuEv = new QSqlQuery(db);
-
-    qryMenuMid->prepare("select menu_id || '-' ||menuname from menu;");
-    qryMenuEv->prepare("select menu_id || '-' ||menuname from menu;");
-
-    qryMenuMid->exec();
-    qryMenuEv->exec();
-
-    menuMidModel->setQuery(*qryMenuMid);
-    menuEvModel->setQuery(*qryMenuEv);
-
+    menuMidModel = new QSqlQueryModel();
+    menuMidModel->setQuery("select menu_id, menuname from menu" );
     ui->comboBoxMenuMid->setModel(menuMidModel);
+    ui->comboBoxMenuMid->setModelColumn(1);
+
+    menuEvModel =new QSqlQueryModel();
+    menuEvModel->setQuery("select menu_id, menuname from menu" );
+    ui->comboBoxMenuEv->setModel(menuMidModel);
+    ui->comboBoxMenuEv->setModelColumn(1);
+
     ui->comboBoxMenuMid->setStyleSheet("QWidget {background-color:red; color:black;}");
-    ui->comboBoxMenuEv->setModel(menuEvModel);
+    //ui->comboBoxMenuEv->setModel(menuEvModel);
     ui->comboBoxMenuEv->setStyleSheet("QWidget {background-color:green; color:white;}");
+
+
+
+    // show listviews for dishes / mid /ev.
+    // extract menuID from comboMidMenu
+    // only for the first time
+    QModelIndex indexMid = menuMidModel->index(0,0);
+    QString menuId = indexMid.data().toString();
+
+    listMidModel = new QSqlQueryModel();
+    listMidModel->setQuery("select dish.meal from menu_dish,dish where menu_dish.dish_id = dish.dish_id and menu_dish.menu_id = "+menuId );
+    listMidModel->setHeaderData(0, Qt::Horizontal, QObject::tr("Dish"));
+    //listMidModel->setHeaderData(1, Qt::Horizontal, QObject::tr("Dish"));
+
+    //listEvModel->setHeaderData(0, Qt::Vertical, QObject::tr("a"));
+
+    ui->tableViewMid->setModel(listMidModel);
+
+     listMidModel->setQuery("select dish.meal from menu_dish,dish where menu_dish.dish_id = dish.dish_id and menu_dish.menu_id = "+id);
+
+
+    listEvModel = new QSqlQueryModel();
+    listEvModel->setQuery("select dish.meal from menu_dish,dish where menu_dish.dish_id = dish.dish_id and menu_dish.menu_id = "+id );
+    listEvModel->setHeaderData(0, Qt::Horizontal, QObject::tr("Dish"));
+    //listEvModel->setHeaderData(1, Qt::Horizontal, QObject::tr("Dish"));
+
+    //listEvModel->setHeaderData(0, Qt::Vertical, QObject::tr("a"));
+
+    ui->tableViewEv->setModel(listEvModel);
+
+
+
+
+/*
+    QTableView *tableviewMid = new QTableView;
+    tableviewMid->setModel(listEvModel);
+    tableviewMid->show();
+*/
+    //listMidModel = new QSqlTableModel();
 
 
     // Patient-Restricitons
@@ -151,9 +181,6 @@ MainWindow::MainWindow(QWidget *parent) :
    // ui->lineEditUser->setText("");
 
 
-
-
-
     /*
      *  Input data in tables
      *  QSqlQuery query;
@@ -163,9 +190,6 @@ MainWindow::MainWindow(QWidget *parent) :
     query.bindValue(":forename", "Bart");
     query.bindValue(":surname", "Simpson");
     query.exec();
-     *
-     *
-     *
      * */
 
 }
@@ -249,16 +273,10 @@ void MainWindow::on_pushButton_admin_clicked()
     aDialog.exec();
 }
 
-/*
-    QModelIndex indexId = qryModelFloor->index(index,0);
-    QString id = indexId.data().toString();
-    qDebug() << "Index: floor: " << id;
-*/
-
 void MainWindow::on_comboBoxFloor_currentIndexChanged(int index)
 {
 
-  indexId = qryModelFloor->index(index,0);
+  QModelIndex indexId = qryModelFloor->index(index,0);
   QString id = indexId.data().toString();
   qDebug() << "id_indexId.data: "<< id;
 
@@ -271,7 +289,7 @@ void MainWindow::on_comboBoxFloor_currentIndexChanged(int index)
 
 void MainWindow::on_comboBoxFloor_activated(int index)
 {
-    indexId = qryModelFloor->index(index,0);
+    QModelIndex indexId = qryModelFloor->index(index,0);
     QString id = indexId.data().toString();
     qDebug() << "on_activated: " << "id_indexId.data: "<< id;
 
@@ -279,6 +297,22 @@ void MainWindow::on_comboBoxFloor_activated(int index)
         bedModel->setQuery("select bed_id,description from bed where floor_id="+id);
     }
 
+}
 
+void MainWindow::on_comboBoxMenuMid_activated(int index)
+{
+    QModelIndex indexId = menuMidModel->index(index,0);
+    QString id = indexId.data().toString();
+    // MenuID, now select dishes from
+    //qDebug() << "Menu_Mid_ on_activated: " << "id_indexId.data: "<< id;
+    listMidModel->setQuery("select dish.meal from menu_dish,dish where menu_dish.dish_id = dish.dish_id and menu_dish.menu_id = "+id);
 
+}
+
+void MainWindow::on_comboBoxMenuEv_activated(int index)
+{
+    QModelIndex indexId = menuEvModel->index(index,0);
+    QString id = indexId.data().toString();
+    // MenuID, now select dishes from
+    listEvModel->setQuery("select dish.meal from menu_dish,dish where menu_dish.dish_id = dish.dish_id and menu_dish.menu_id = "+id);
 }

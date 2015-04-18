@@ -41,6 +41,10 @@ private slots:
 
     void on_comboBoxFloor_activated(int index);
 
+    void on_comboBoxMenuMid_activated(int index);
+
+    void on_comboBoxMenuEv_activated(int index);
+
 private:
 
     Ui::MainWindow *ui;
@@ -51,15 +55,21 @@ private:
 
     QSqlQueryModel *qryModelFloor;
 
-    QModelIndex indexId;
+    // war nur Versuch wegen Fehlermeldung on index_changed!
+    // QModelIndex indexId;
 
     QSqlQueryModel * userModel;
     QSqlQueryModel * bedModel;
 
     QSqlQueryModel * patientModel;
 
-    QSqlQueryModel * menuModelMittag;
-    QSqlQueryModel * menuModelAbend;
+    QSqlQueryModel * menuMidModel;
+
+    QSqlQueryModel * menuEvModel;
+
+    QSqlQueryModel * listMidModel;
+
+    QSqlQueryModel * listEvModel;
 
 
 };

@@ -324,26 +324,6 @@
      <string>Patient:</string>
     </property>
    </widget>
-   <widget class="QListView" name="listViewMittag">
-    <property name="geometry">
-     <rect>
-      <x>80</x>
-      <y>220</y>
-      <width>211</width>
-      <height>121</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QListView" name="listViewAbend">
-    <property name="geometry">
-     <rect>
-      <x>550</x>
-      <y>220</y>
-      <width>211</width>
-      <height>121</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QLabel" name="labelBed_3">
     <property name="geometry">
      <rect>
@@ -408,6 +388,26 @@
      <font>
       <pointsize>15</pointsize>
      </font>
+    </property>
+   </widget>
+   <widget class="QTableView" name="tableViewMid">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>220</y>
+      <width>221</width>
+      <height>141</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTableView" name="tableViewEv">
+    <property name="geometry">
+     <rect>
+      <x>700</x>
+      <y>210</y>
+      <width>151</width>
+      <height>141</height>
+     </rect>
     </property>
    </widget>
   </widget>
