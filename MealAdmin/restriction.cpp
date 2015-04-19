@@ -1,17 +1,17 @@
 // 18.03.2015
 // 07.04.2015
 
-#include "dialogbed.h"
-#include "ui_dialogbed.h"
+#include "restriction.h"
+#include "ui_restriction.h"
 #include "QDebug"
 #include <QSqlQuery>
 #include <QString>
 #include <QDateTime>
 
 
-DialogBed::DialogBed(QWidget *parent) :
+Restriction::Restriction(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::DialogBed)
+    ui(new Ui::Restriction)
 {
     ui->setupUi(this);
 
@@ -120,12 +120,12 @@ DialogBed::DialogBed(QWidget *parent) :
 
 }
 
-DialogBed::~DialogBed()
+Restriction::~Restriction()
 {
     delete ui;
 }
 
-void DialogBed::on_comboBoxBed_currentIndexChanged(const QString &arg1)
+void Restriction::on_comboBoxBed_currentIndexChanged(const QString &arg1)
 {
     QString name = ui->comboBoxBed->currentText();
     qDebug() << name;
@@ -133,7 +133,7 @@ void DialogBed::on_comboBoxBed_currentIndexChanged(const QString &arg1)
 
 }
 
-void DialogBed::on_pushButton_clicked()
+void Restriction::on_pushButton_clicked()
 {
 
    QString xsql;
@@ -185,7 +185,7 @@ void DialogBed::on_pushButton_clicked()
 }
 
 
-void DialogBed::on_comboBoxPatient_currentIndexChanged(int index)
+void Restriction::on_comboBoxPatient_currentIndexChanged(int index)
 {
    // indexId hat ein Element des Models (zeile, spalte)
    // int index ist nicht elegant!

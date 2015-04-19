@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include <QApplication>
 #include "connection.h"
-#include "dialogbed.h"
+#include "restriction.h"
 #include "dialogstructure.h"
 #include "login.h"
 #include <unittest++/UnitTest++.h>
@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
     // MainWindows is called from Login
     // then Login !!
 
-
+/*
     MainWindow mainWindow;
     Login passwordWindow;
 
@@ -43,10 +43,10 @@ int main(int argc, char *argv[])
     passwordWindow.setModal(true);
     passwordWindow.exec();
     mainWindow.show();
-/*
-    DialogBed dialogBed;
-    dialogBed.show();
 */
+
+    Restriction restriction;
+    restriction.show();
 
     return a.exec();
 }

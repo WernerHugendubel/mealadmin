@@ -1,5 +1,5 @@
-#ifndef DIALOGBED_H
-#define DIALOGBED_H
+#ifndef RESTRICTION_H
+#define RESTRICTION_H
 
 #include <QDialog>
 #include "QSqlQueryModel"
@@ -8,16 +8,16 @@
 #include "QSqlRelationalTableModel"
 
 namespace Ui {
-class DialogBed;
+class Restriction;
 }
 
-class DialogBed : public QDialog
+class Restriction : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit DialogBed(QWidget *parent = 0);
-    ~DialogBed();
+    explicit Restriction(QWidget *parent = 0);
+    ~Restriction();
 
 private slots:
     void on_comboBoxBed_currentIndexChanged(const QString &arg1);
@@ -29,7 +29,7 @@ private slots:
 
 
 private:
-    Ui::DialogBed *ui;
+    Ui::Restriction *ui;
 
     QSqlTableModel *modelTable;
     QSqlTableModel *model;
@@ -54,4 +54,4 @@ private:
 
 };
 
-#endif // DIALOGBED_H
+#endif // RESTRICTION_H

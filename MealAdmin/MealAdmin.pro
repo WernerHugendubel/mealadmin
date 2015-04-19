@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     test.cpp \
     myclass.cpp \
     dialogadmin.cpp \
-    dialogbed.cpp
+    restriction.cpp \
+    dialogtest.cpp
 
 HEADERS  += mainwindow.h \
     connection.h \
@@ -31,12 +32,13 @@ HEADERS  += mainwindow.h \
     login.h \
     myclass.h \
     dialogadmin.h \
-    dialogbed.h
+    restriction.h \
+    dialogtest.h
 
 FORMS    += mainwindow.ui \
     dialogstructure.ui \
-    restriction.ui \
     dialogsupplier.ui \
     login.ui \
     dialogadmin.ui \
-    dialogbed.ui
+    restriction.ui \
+    dialogtest.ui
