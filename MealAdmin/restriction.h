@@ -28,6 +28,8 @@ private slots:
     void on_comboBoxPatient_currentIndexChanged(int index);
 
 
+    void on_comboBoxPatient_activated(int index);
+
 private:
     Ui::Restriction *ui;
 

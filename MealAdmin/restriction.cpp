@@ -217,3 +217,11 @@ void Restriction::on_comboBoxPatient_currentIndexChanged(int index)
 }
 
 
+
+void Restriction::on_comboBoxPatient_activated(int index)
+{
+    QModelIndex indexId = patientModel->index(index,0);
+    QString id = indexId.data().toString();
+    qDebug() << "id: " << id<< "activated_ hier bin ich schon!";
+    modelPatDietReq->setFilter("patient_id = " + id);
+}
