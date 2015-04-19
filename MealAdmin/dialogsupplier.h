@@ -2,6 +2,7 @@
 #define DIALOGSUPPLIER_H
 
 #include <QDialog>
+#include "QSqlTableModel"
 
 namespace Ui {
 class DialogSupplier;
@@ -15,8 +16,17 @@ public:
     explicit DialogSupplier(QWidget *parent = 0);
     ~DialogSupplier();
 
+private slots:
+   // void on_tableViewDish_activated(const QModelIndex &index);
+
+    void on_pushButtonSave_clicked();
+
+    void on_DialogSupplier_destroyed();
+
 private:
     Ui::DialogSupplier *ui;
+    QSqlTableModel * qryTableModelDish;
+
 };
 
 #endif // DIALOGSUPPLIER_H

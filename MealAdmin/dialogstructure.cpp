@@ -13,8 +13,8 @@ DialogStructure::DialogStructure(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogStructure)
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("/home/freiw/Qt/5.3/hospmeal.sqlite");
+   QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+   db.setDatabaseName("/home/freiw/Qt/5.3/hospmeal.sqlite");
 
     if (db.open())
     {
@@ -25,22 +25,22 @@ DialogStructure::DialogStructure(QWidget *parent) :
        qDebug() << "No Database Opened!";
     }
 
+
+    ui->setupUi(this);
+
     model = new QSqlTableModel(this);
     model->setTable("floor");
     model->setSort(0, Qt::AscendingOrder);
     model->setHeaderData(0, Qt::Horizontal, tr("ID"));
     model->setHeaderData(1, Qt::Horizontal, tr("Floor"));
     model->setHeaderData(2, Qt::Horizontal, tr("Description"));
+    model->setEditStrategy(QSqlTableModel::OnManualSubmit);
     model->select();
-
 
     tableView = new QTableView;
     tableView->setColumnHidden(0, true);
     tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     tableView->resizeColumnsToContents();
-
-    ui->setupUi(this);
-
     ui->tableView->setModel(model);
 
 
@@ -54,6 +54,9 @@ DialogStructure::DialogStructure(QWidget *parent) :
     // 1 = colume with foregin key!
     // stellt automatisch Wert von Foregin key dar!! course_id ... description!!!
     modelMeal->setRelation(1, QSqlRelation("course", "course_id", "description"));
+    // new 19.04.
+    modelMeal->setRelation(3, QSqlRelation("restriction", "restriction_id", "description"));
+
     modelMeal->select();
 
     tableViewMeal = new QTableView;
@@ -63,17 +66,21 @@ DialogStructure::DialogStructure(QWidget *parent) :
     tableViewMeal->resizeColumnsToContents();
 
     ui->tableViewMeal->setModel(modelMeal);
-    // combo box!
+    // Das macht automatisch eine combo box, und zwar zu den QSqlRelations's !!
+    // was ist wenn es mehrere gibt?
     ui->tableViewMeal->setItemDelegate(new QSqlRelationalDelegate(tableViewMeal));
 
 
     // **************************************************************************************
     // relational table View for "patient"
-    modelPatient = new QSqlTableModel(this);
+    modelPatient = new QSqlRelationalTableModel(this);
     modelPatient->setTable("Patient");
-    model->setSort(0, Qt::AscendingOrder);
-    //modelPatient->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    //model->setSort(0, Qt::AscendingOrder);
+    modelPatient->setEditStrategy(QSqlTableModel::OnManualSubmit);
     modelPatient->setHeaderData(0, Qt::Horizontal, tr("ID"));
+
+    modelPatient->setRelation(6, QSqlRelation("bed", "bed_id", "description"));
+
     modelPatient->select();
 
     tableViewPatient = new QTableView;
@@ -81,17 +88,22 @@ DialogStructure::DialogStructure(QWidget *parent) :
     //tableViewPatient->setSelectionBehavior(QAbstractItemView::SelectRows);
     //tableViewPatient->resizeColumnsToContents();
 
+
     ui->tableView_Patient->setModel(modelPatient);
+
+//    ui->tableView_Patient->setItemDelegate(new QSqlRelationalDelegate(tableView_Patient));
 
     // **************************************************************************************
     // relational table View for "PatientMenu"
     modelPatientMenu = new QSqlRelationalTableModel(this);
     modelPatientMenu->setTable("patient_menu");
-    modelPatientMenu->setSort(0, Qt::AscendingOrder);
+
+    // blödsinn
+    // modelPatientMenu->setSort(0, Qt::AscendingOrder);
     modelPatientMenu->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    modelPatientMenu->setHeaderData(0, Qt::Horizontal, tr("Date"));
-    modelPatientMenu->setHeaderData(1, Qt::Horizontal, tr("Patient"));
-    modelPatientMenu->setHeaderData(3, Qt::Horizontal, tr("Menu"));
+    modelPatientMenu->setHeaderData(2, Qt::Horizontal, tr("Date"));
+    modelPatientMenu->setHeaderData(3, Qt::Horizontal, tr("Patient"));
+    modelPatientMenu->setHeaderData(4, Qt::Horizontal, tr("Menu"));
 
     /* The setRelation() function calls establish a relationship between two tables. The first call specifies that column 1
     * in table patient_menu is a foreign key that maps with field patient_id of table patient,
@@ -100,13 +112,14 @@ DialogStructure::DialogStructure(QWidget *parent) :
 
     // 1= column no 1 = patient_id, 2= column no 2 = menu_id
 
-    modelPatientMenu->setRelation(1, QSqlRelation("patient", "patient_id", "lastname"));
-    modelPatientMenu->setRelation(2, QSqlRelation("menu", "menu_id", "menuname"));
+    modelPatientMenu->setRelation(3, QSqlRelation("patient", "patient_id", "lastname"));
+    modelPatientMenu->setRelation(4, QSqlRelation("menu", "menu_id", "menuname"));
 
     modelPatientMenu->select();
 
     tableViewPatientMenu = new QTableView;
-    tableViewPatientMenu->setColumnHidden(0, true);
+
+    //tableViewPatientMenu->setColumnHidden(0, true);
 
     tableViewPatientMenu->setSelectionBehavior(QAbstractItemView::SelectRows);
     tableViewPatientMenu->resizeColumnsToContents();
@@ -220,4 +233,26 @@ void DialogStructure::on_NewRecordPatientMenu_clicked()
 void DialogStructure::on_DeleteRecordPatientMenu_clicked()
 {
 
+}
+
+void DialogStructure::on_pushButtonSubmit1_clicked()
+{
+    model->submitAll();
+}
+
+void DialogStructure::on_pushButtonSaveDish_clicked()
+{
+    modelMeal->submitAll();
+}
+
+void DialogStructure::on_pushButtonSubmitPatientMenu_clicked()
+{
+    modelPatientMenu->submitAll();
+    qDebug() << "error: " << modelPatient->lastError().databaseText() ;
+
+}
+
+void DialogStructure::on_pushButtonSubmitPatient_clicked()
+{
+    modelPatient->submitAll();
 }

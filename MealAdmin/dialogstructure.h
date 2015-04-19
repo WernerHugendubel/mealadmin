@@ -42,10 +42,18 @@ private slots:
 
     void on_DeleteRecordPatientMenu_clicked();
 
+    void on_pushButtonSubmit1_clicked();
+
+    void on_pushButtonSaveDish_clicked();
+
+    void on_pushButtonSubmitPatientMenu_clicked();
+
+    void on_pushButtonSubmitPatient_clicked();
+
 private:
     Ui::DialogStructure *ui;
     QSqlTableModel *model;
-    QSqlTableModel *modelPatient;
+    QSqlRelationalTableModel *modelPatient;
 
     QSqlRelationalTableModel *modelMeal;
     QSqlRelationalTableModel *modelPatientMenu;

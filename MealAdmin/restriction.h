@@ -30,6 +30,10 @@ private slots:
 
     void on_comboBoxPatient_activated(int index);
 
+    void on_pushButtonAddRecordDietReq_clicked();
+
+    void on_pushButtonSubmit_clicked();
+
 private:
     Ui::Restriction *ui;
 

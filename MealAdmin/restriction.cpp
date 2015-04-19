@@ -7,6 +7,9 @@
 #include <QSqlQuery>
 #include <QString>
 #include <QDateTime>
+#include <QSqlRelationalDelegate>
+#include <QSqlRecord>
+#include <QSqlError>
 
 
 Restriction::Restriction(QWidget *parent) :
@@ -37,57 +40,82 @@ Restriction::Restriction(QWidget *parent) :
     ui->comboBoxPatient->setModelColumn(2);
 
 
-    // model für Tabelle "menu"
-    menuModel = new QSqlTableModel(this);
-    menuModel->setTable("menu");
-    menuModel->select();
-    ui->comboBoxMenu->setModel(menuModel);
-
-
-    // model für Tabelle "bed"
-    model = new QSqlTableModel(this);
-    model->setTable("bed");
-    model->setSort(0, Qt::AscendingOrder);
-    model->setHeaderData(0, Qt::Horizontal, tr("bed_id"));
-    model->setHeaderData(1, Qt::Horizontal, tr("room_id"));
-    model->setHeaderData(2, Qt::Horizontal, tr("description"));
-    model->select();
-
-    // tableView für Bed
-    tableViewBed = new QTableView;
-    tableViewBed->setColumnHidden(0, true);
-    tableViewBed->setSelectionBehavior(QAbstractItemView::SelectRows);
-    tableViewBed->resizeColumnsToContents();
-
-    // model für Tabelle "patient_diet_req"
+    // model für"patient_diet_req" ************************************************************************************
     // QsqlRelationalTableModel - weil Fremdschlüssel "patient_id" und "dietary_req_id" vorhanden sind.
     //
+
     modelPatDietReq = new QSqlRelationalTableModel(this);
+
     modelPatDietReq->setTable("patient_dietary_req");
 
-    //modelPatDietReq->setRelation(0,QSqlRelation("patient","patient_id","lastname"));
     modelPatDietReq->setRelation(1,QSqlRelation("dietary_req","dietary_req_id","description"));
+
     modelPatDietReq->select();
 
     qDebug() << "patient " << ui->comboBoxPatient->currentText();
-
     // Zwischenlösung: erstes Element in ComboBox wird gefiltert!
     // gleich Lösung wie in Slot
+
     QModelIndex indexId = patientModel->index(0,0);
     QString id = indexId.data().toString();
-
     modelPatDietReq->setFilter("patient_id = " + id);
 
     // zeige tableView mit patient-id, dietary_req->description
+    tableViewPatientDietReq->setSelectionBehavior(QAbstractItemView::SelectRows);
+   // tableViewPatientDietReq->resizeColumnsToContents();
+
+
     ui->tableViewPatientDietReq->setModel(modelPatDietReq);
+
+   // tableViewPatientDietReq->setItemDelegate(new QSqlRelationalDelegate(tableViewPatientDietReq));
+
+    // view->setItemDelegate(new QSqlRelationalDelegate(view));
+    // Combobox für dietary_req_id, deskription
+
 
     // primary view is a table
     //ui->tableViewBed->setModel(model);
 
     // the same model as combobox
+  /*
     ui->comboBoxBed->setModel(model);
     ui->comboBoxBed->setModelColumn(2);
     ui->comboBoxBed->modelColumn();
+
+*/
+
+
+    /*      SO GEHTS mit COMBOBOX und RELATION!
+     *     // **************************************************************************************
+    // relational table View for "dish"
+    modelMeal = new QSqlRelationalTableModel(this);
+    modelMeal->setTable("dish");
+    model->setSort(0, Qt::AscendingOrder);
+    modelMeal->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    modelMeal->setHeaderData(0, Qt::Horizontal, tr("ID"));
+    // 1 = colume with foregin key!
+    // stellt automatisch Wert von Foregin key dar!! course_id ... description!!!
+    modelMeal->setRelation(1, QSqlRelation("course", "course_id", "description"));
+    modelMeal->select();
+
+    tableViewMeal = new QTableView;
+    tableViewMeal->setColumnHidden(0, true);
+
+    tableViewMeal->setSelectionBehavior(QAbstractItemView::SelectRows);
+    tableViewMeal->resizeColumnsToContents();
+
+    ui->tableViewMeal->setModel(modelMeal);
+    // Das macht automatisch eine combo box, und zwar zu den QSqlRelations's !!
+    // was ist wenn es mehrere gibt?
+    ui->tableViewMeal->setItemDelegate(new QSqlRelationalDelegate(tableViewMeal));
+
+
+*/
+
+
+
+
+
 
 
 
@@ -209,13 +237,7 @@ void Restriction::on_comboBoxPatient_currentIndexChanged(int index)
        return;
    }
 
-
-
-
-
-
 }
-
 
 
 void Restriction::on_comboBoxPatient_activated(int index)
@@ -224,4 +246,65 @@ void Restriction::on_comboBoxPatient_activated(int index)
     QString id = indexId.data().toString();
     qDebug() << "id: " << id<< "activated_ hier bin ich schon!";
     modelPatDietReq->setFilter("patient_id = " + id);
+
+}
+
+void Restriction::on_pushButtonAddRecordDietReq_clicked()
+{
+    int row = modelPatDietReq->rowCount();
+
+    modelPatDietReq->insertRow(row);
+
+
+    /*
+    // access item in index(row,column,[parentindex])
+    // 1 = floor
+
+    // jetzt Patient_id lesen!
+    QModelIndex index = modelPatDietReq->index(row-1,0);
+    QString id = index.data().toString();
+    qDebug() << " patient_id: " << id;
+    //QSqlRecord record = model->record(row+1);
+    //record.setValue("patient_id", 1);
+
+    qDebug() << " patient_id RECORD: " << row;
+
+    //model->setRecord(row,record);
+
+    modelPatDietReq->setData(model->index(row, 1), 1);
+*/
+    modelPatDietReq->submitAll();
+    qDebug() << "last error: " << modelPatDietReq->lastError();
+
+
+//    model->setData(model->index(row,0),1);
+
+
+
+
+
+
+ /* ************ mit record kann in model geschrieben werden..!!!
+
+
+            QSqlRecord record = model.record(i);
+                   double salary = record.value("salary").toInt();
+                   salary *= 1.1;
+                   record.setValue("salary", salary);
+                   model.setRecord(i, record);
+               }
+
+*/
+
+
+
+
+
+
+}
+
+void Restriction::on_pushButtonSubmit_clicked()
+{
+    modelPatDietReq->submitAll();
+
 }

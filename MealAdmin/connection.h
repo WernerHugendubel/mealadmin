@@ -1,7 +1,6 @@
 #ifndef CONNECTION_H
 #define CONNECTION_H
 
-
 #include <QSqlDatabase>
 #include <QMessageBox>
 #include <QSqlQuery>
@@ -24,7 +23,17 @@ static bool createConnection()
          qDebug() << dbPath;
     }
 
+/*
+    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
+    db.setHostName("bigblue");
+    db.setDatabaseName("flightdb");
+    db.setUserName("acarlson");
+    db.setPassword("1uTbSbAs");
+    bool ok = db.open();
+*/
 
+
+    // in wirkl. /home/freiw/Qt/5.3/hospmeal.sqlite);
     db.setDatabaseName("/home/freiw/hospmeal.sqlite");
     if (!db.open()) {
         QMessageBox::critical(0, qApp->tr("Cannot open database"),

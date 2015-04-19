@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 #include "dialogstructure.h"
 #include "dialogadmin.h"
-#include "connection.h"
+//#include "connection.h"
 #include "dialogsupplier.h"
 #include <QMessageBox>
 #include <QtDebug>
@@ -11,6 +11,8 @@
 #include <QSqlQueryModel>
 #include <QTableView>
 #include <login.h>
+#include <restriction.h>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -215,7 +217,7 @@ void MainWindow::on_pushButton_clicked()
     qDebug() << "Yes"; // create Database
     qDebug() <<  QDir::current();
 
-    createConnection();
+    //createConnection();
 
     }
 }
@@ -225,11 +227,6 @@ void MainWindow::on_pushButton_Structure_clicked()
     DialogStructure d;
     d.setModal(true);
     d.exec();
-}
-
-void MainWindow::on_pushButton_2_clicked()
-{
-  //  ui->textEdit->setText("Hallo");
 }
 
 void MainWindow::on_pushButton_Supplier_clicked()
@@ -328,4 +325,18 @@ void MainWindow::on_comboBoxBed_activated(int index)
     ui->lineEditPatient->setText(lastnameId.data().toString());
 
 
+}
+
+void MainWindow::on_pushButtonRestriction_clicked()
+{
+    Restriction mRestriction;
+    mRestriction.setModal(true);
+    mRestriction.exec();
+}
+
+void MainWindow::on_pushButtonSupplier_clicked()
+{
+    DialogSupplier mDialogSupplier;
+    mDialogSupplier.setModal(true);
+    mDialogSupplier.exec();
 }

@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include <QApplication>
-#include "connection.h"
+//#include "connection.h"
 #include "restriction.h"
 #include "dialogstructure.h"
 #include "login.h"
@@ -43,10 +43,13 @@ int main(int argc, char *argv[])
     passwordWindow.setModal(true);
     passwordWindow.exec();
     mainWindow.show();
-*/
 
+*/
     Restriction restriction;
     restriction.show();
-
+/*
+    DialogStructure mDialogStructure;
+    mDialogStructure.show();
+*/
     return a.exec();
 }

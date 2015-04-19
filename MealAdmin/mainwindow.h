@@ -47,6 +47,10 @@ private slots:
 
     void on_comboBoxBed_activated(int index);
 
+    void on_pushButtonRestriction_clicked();
+
+    void on_pushButtonSupplier_clicked();
+
 private:
 
     Ui::MainWindow *ui;
