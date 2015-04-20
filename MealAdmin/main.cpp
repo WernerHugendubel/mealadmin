@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
     // MainWindows is called from Login
     // then Login !!
 
-/*
+
     MainWindow mainWindow;
     Login passwordWindow;
 
@@ -44,10 +44,11 @@ int main(int argc, char *argv[])
     passwordWindow.exec();
     mainWindow.show();
 
-*/
+/*
     Restriction restriction;
     restriction.show();
-/*
+
+
     DialogStructure mDialogStructure;
     mDialogStructure.show();
 */

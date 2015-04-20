@@ -51,6 +51,14 @@ private slots:
 
     void on_pushButtonSupplier_clicked();
 
+    void on_actionOrdered_Dishes_2_triggered();
+
+    void on_actionSupplier_triggered();
+
+    void on_actionAssign_Dish_Restriction_triggered();
+
+    void on_actionAssign_Patient_Restriction_triggered();
+
 private:
 
     Ui::MainWindow *ui;

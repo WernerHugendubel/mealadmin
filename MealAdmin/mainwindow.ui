@@ -458,6 +458,8 @@
     <property name="title">
      <string>Edit</string>
     </property>
+    <addaction name="actionAssign_Dish_Restriction"/>
+    <addaction name="actionAssign_Patient_Restriction"/>
    </widget>
    <widget class="QMenu" name="menuAdmin">
     <property name="title">
@@ -471,10 +473,26 @@
      <string>Help</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuReport">
+    <property name="title">
+     <string>Report</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="actionOrdered_Dishes_2"/>
+   </widget>
+   <widget class="QMenu" name="menuSupplier">
+    <property name="title">
+     <string>Supplier</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="actionSupplier"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuAdmin"/>
    <addaction name="menuHelp"/>
+   <addaction name="menuReport"/>
+   <addaction name="menuSupplier"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -513,6 +531,39 @@
   <action name="actionExport_2">
    <property name="text">
     <string>Export</string>
+   </property>
+  </action>
+  <action name="actionOrdered_Dishes">
+   <property name="text">
+    <string>Ordered Dishes</string>
+   </property>
+  </action>
+  <action name="actionOrdered_Dishes_2">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Ordered Dishes</string>
+   </property>
+  </action>
+  <action name="actionSupplier">
+   <property name="text">
+    <string>Insert Dish</string>
+   </property>
+  </action>
+  <action name="actionAssign_Patient_to_Restriction">
+   <property name="text">
+    <string>Assign Patient to Restriction</string>
+   </property>
+  </action>
+  <action name="actionAssign_Dish_Restriction">
+   <property name="text">
+    <string>Assign Dish Restriction</string>
+   </property>
+  </action>
+  <action name="actionAssign_Patient_Restriction">
+   <property name="text">
+    <string>Assign Patient Restriction</string>
    </property>
   </action>
  </widget>

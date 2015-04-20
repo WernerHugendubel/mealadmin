@@ -47,15 +47,22 @@ Restriction::Restriction(QWidget *parent) :
 
     modelPatDietReq->setTable("patient_dietary_req");
     modelPatDietReq->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    //modelPatDietReq->setEditStrategy(QSqlTableModel::OnRowChange);
+
     modelPatDietReq->setRelation(1,QSqlRelation("dietary_req","dietary_req_id","description"));
+
     modelPatDietReq->select();
+
 
     tableViewPatientDietReq = new QTableView;
     // patient_id von ComboBox holen!
     QModelIndex indexId = patientModel->index(0,0);
     QString id = indexId.data().toString();
     modelPatDietReq->setFilter("patient_id = " + id);
-    //tableViewPatientDietReq->resizeColumnsToContents();
+
+    // sollte 1. Spalte ausblenden!
+    ui->tableViewPatientDietReq->setColumnHidden(0, true);
+    tableViewPatientDietReq->resizeColumnsToContents();
     ui->tableViewPatientDietReq->setModel(modelPatDietReq);
     ui->tableViewPatientDietReq->setItemDelegate(new QSqlRelationalDelegate(tableViewPatientDietReq));
 
@@ -108,7 +115,7 @@ void Restriction::on_pushButton_clicked()
    QString menu_id;
    QString bed_id;
 
-
+/*
 
    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
    db.setDatabaseName("/home/freiw/Qt/5.3/hospmeal.sqlite");
@@ -143,13 +150,13 @@ void Restriction::on_pushButton_clicked()
        query.exec("INSERT INTO project (id, name, ownerid) "
                    "VALUES (201, 'Manhattan Project', "
                  + QString::number(employeeId) + ')');
-    */
+
     QSqlDatabase::database().transaction();
     QSqlQuery query1;
     query1.exec(xsql);
     QSqlDatabase::database().commit();
     db.close();
-
+*/
 }
 
 
@@ -195,50 +202,24 @@ void Restriction::on_pushButtonAddRecordDietReq_clicked()
 
     modelPatDietReq->insertRow(row);
 
-    QSqlRecord record = modelPatDietReq->record(row);
-
-    record.setValue("patient_id",2 );
-    record.setValue("dietary_req_id",2 );
-    modelPatDietReq->setRecord(row,record);
-
-    modelPatDietReq->submitAll();
-
-
-    /*
-    // access item in index(row,column,[parentindex])
-    // 1 = floor
-
     // jetzt Patient_id lesen!
     QModelIndex index = modelPatDietReq->index(row-1,0);
-    QString id = index.data().toString();
+    //QString id = index.data().toString();
+
+    QVariant id = index.data();
+
+
     qDebug() << " patient_id: " << id;
 
-    qDebug() << " patient_id RECORD: " << row;
-    //model->setRecord(row,record);
-    modelPatDietReq->setData(model->index(row, 1), 1);
-*/
-    modelPatDietReq->submitAll();
-    qDebug() << "last error: " << modelPatDietReq->lastError();
 
+    QSqlRecord record = modelPatDietReq->record(row);
+    record.setValue("patient_id", id.toInt() );
+    //record.setValue("dietary_req_id"," );
+    modelPatDietReq->setRecord(row,record);
+    //QSqlRecord::setGenerated(const QString & name, bool generated)
+    record.setGenerated("patient_id", true);
 
-//    model->setData(model->index(row,0),1);
-
-
-
-
-
-
- /* ************ mit record kann in model geschrieben werden..!!!
-
-
-            QSqlRecord record = model.record(i);
-                   double salary = record.value("salary").toInt();
-                   salary *= 1.1;
-                   record.setValue("salary", salary);
-                   model.setRecord(i, record);
-               }
-
-*/
+  // qDebug() << "last error: " << modelPatDietReq->lastError();
 
 
 

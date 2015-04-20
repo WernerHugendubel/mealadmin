@@ -23,7 +23,11 @@ SOURCES += main.cpp\
     myclass.cpp \
     dialogadmin.cpp \
     restriction.cpp \
-    dialogtest.cpp
+    dialogtest.cpp \
+    dialogdishrestriction.cpp \
+    dialoggetlistordereddishes.cpp \
+    dialogudatedishes.cpp \
+    dialoginsertdish.cpp
 
 HEADERS  += mainwindow.h \
     connection.h \
@@ -33,7 +37,11 @@ HEADERS  += mainwindow.h \
     myclass.h \
     dialogadmin.h \
     restriction.h \
-    dialogtest.h
+    dialogtest.h \
+    dialogdishrestriction.h \
+    dialoggetlistordereddishes.h \
+    dialogudatedishes.h \
+    dialoginsertdish.h
 
 FORMS    += mainwindow.ui \
     dialogstructure.ui \
@@ -41,4 +49,8 @@ FORMS    += mainwindow.ui \
     login.ui \
     dialogadmin.ui \
     restriction.ui \
-    dialogtest.ui
+    dialogtest.ui \
+    dialogdishrestriction.ui \
+    dialoggetlistordereddishes.ui \
+    dialogudatedishes.ui \
+    dialoginsertdish.ui

@@ -4,6 +4,12 @@
 #include "dialogadmin.h"
 //#include "connection.h"
 #include "dialogsupplier.h"
+#include "dialoginsertdish.h"
+#include "dialogdishrestriction.h"
+#include "restriction.h"
+
+
+#include "dialoggetlistordereddishes.h"
 #include <QMessageBox>
 #include <QtDebug>
 #include <QtSql>
@@ -129,7 +135,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->tableViewMid->setModel(listMidModel);
 
-     listMidModel->setQuery("select dish.meal from menu_dish,dish where menu_dish.dish_id = dish.dish_id and menu_dish.menu_id = "+id);
+    listMidModel->setQuery("select dish.meal from menu_dish,dish where menu_dish.dish_id = dish.dish_id and menu_dish.menu_id = "+id);
 
 
     listEvModel = new QSqlQueryModel();
@@ -339,4 +345,32 @@ void MainWindow::on_pushButtonSupplier_clicked()
     DialogSupplier mDialogSupplier;
     mDialogSupplier.setModal(true);
     mDialogSupplier.exec();
+}
+
+void MainWindow::on_actionOrdered_Dishes_2_triggered()
+{
+    DialogGetListOrderedDishes mGetListOrderedDishes;
+    mGetListOrderedDishes.setModal(true);
+    mGetListOrderedDishes.exec();
+}
+
+void MainWindow::on_actionSupplier_triggered()
+{
+    DialogInsertDish mDialogInsertDish;
+    mDialogInsertDish.setModal(true);
+    mDialogInsertDish.exec();
+}
+
+void MainWindow::on_actionAssign_Dish_Restriction_triggered()
+{
+    DialogDishRestriction mDialogDishRestriction;
+    mDialogDishRestriction.setModal(true);
+    mDialogDishRestriction.exec();
+}
+
+void MainWindow::on_actionAssign_Patient_Restriction_triggered()
+{
+    Restriction mRestriction;
+    mRestriction.setModal(true);
+    mRestriction.exec();
 }
