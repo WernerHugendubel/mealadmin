@@ -51,6 +51,7 @@ private:
 
     // Master-Detail Patient->PatDietReq
     QSqlRelationalTableModel *modelPatDietReq;
+
     QTableView *tableViewPatientDietReq;
 
 

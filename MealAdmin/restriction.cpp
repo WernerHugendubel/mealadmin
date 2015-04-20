@@ -17,7 +17,6 @@ Restriction::Restriction(QWidget *parent) :
     ui(new Ui::Restriction)
 {
     ui->setupUi(this);
-
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName("/home/freiw/Qt/5.3/hospmeal.sqlite");
 
@@ -47,31 +46,25 @@ Restriction::Restriction(QWidget *parent) :
     modelPatDietReq = new QSqlRelationalTableModel(this);
 
     modelPatDietReq->setTable("patient_dietary_req");
-
+    modelPatDietReq->setEditStrategy(QSqlTableModel::OnManualSubmit);
     modelPatDietReq->setRelation(1,QSqlRelation("dietary_req","dietary_req_id","description"));
-
     modelPatDietReq->select();
 
-    qDebug() << "patient " << ui->comboBoxPatient->currentText();
-    // Zwischenlösung: erstes Element in ComboBox wird gefiltert!
-    // gleich Lösung wie in Slot
+    tableViewPatientDietReq = new QTableView;
 
     QModelIndex indexId = patientModel->index(0,0);
     QString id = indexId.data().toString();
     modelPatDietReq->setFilter("patient_id = " + id);
 
-    // zeige tableView mit patient-id, dietary_req->description
-    tableViewPatientDietReq->setSelectionBehavior(QAbstractItemView::SelectRows);
-   // tableViewPatientDietReq->resizeColumnsToContents();
-
+    // zeige tableViewPatientDietReq mit patient-id, dietary_req->description
+    //tableViewPatientDietReq->setSelectionBehavior(QAbstractItemView::SelectRows);
+    //tableViewPatientDietReq->resizeColumnsToContents();
 
     ui->tableViewPatientDietReq->setModel(modelPatDietReq);
 
-   // tableViewPatientDietReq->setItemDelegate(new QSqlRelationalDelegate(tableViewPatientDietReq));
+    ui->tableViewPatientDietReq->setItemDelegate(new QSqlRelationalDelegate(tableViewPatientDietReq));
 
-    // view->setItemDelegate(new QSqlRelationalDelegate(view));
     // Combobox für dietary_req_id, deskription
-
 
     // primary view is a table
     //ui->tableViewBed->setModel(model);
