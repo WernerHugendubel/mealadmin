@@ -271,9 +271,7 @@ void MainWindow::on_pushButtonSaveOrder_clicked()
 
 void MainWindow::on_pushButton_admin_clicked()
 {
-    DialogAdmin aDialog;
-    aDialog.setModal(true);
-    aDialog.exec();
+
 }
 
 void MainWindow::on_comboBoxFloor_currentIndexChanged(int index)
@@ -373,4 +371,11 @@ void MainWindow::on_actionAssign_Patient_Restriction_triggered()
     Restriction mRestriction;
     mRestriction.setModal(true);
     mRestriction.exec();
+}
+
+void MainWindow::on_actionDatabase_Reset_triggered()
+{
+    DialogAdmin aDialog;
+    aDialog.setModal(true);
+    aDialog.exec();
 }

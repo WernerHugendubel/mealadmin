@@ -59,6 +59,8 @@ private slots:
 
     void on_actionAssign_Patient_Restriction_triggered();
 
+    void on_actionDatabase_Reset_triggered();
+
 private:
 
     Ui::MainWindow *ui;
