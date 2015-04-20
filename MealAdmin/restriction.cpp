@@ -51,68 +51,15 @@ Restriction::Restriction(QWidget *parent) :
     modelPatDietReq->select();
 
     tableViewPatientDietReq = new QTableView;
-
+    // patient_id von ComboBox holen!
     QModelIndex indexId = patientModel->index(0,0);
     QString id = indexId.data().toString();
     modelPatDietReq->setFilter("patient_id = " + id);
-
-    // zeige tableViewPatientDietReq mit patient-id, dietary_req->description
-    //tableViewPatientDietReq->setSelectionBehavior(QAbstractItemView::SelectRows);
     //tableViewPatientDietReq->resizeColumnsToContents();
-
     ui->tableViewPatientDietReq->setModel(modelPatDietReq);
-
     ui->tableViewPatientDietReq->setItemDelegate(new QSqlRelationalDelegate(tableViewPatientDietReq));
 
-    // Combobox für dietary_req_id, deskription
-
-    // primary view is a table
-    //ui->tableViewBed->setModel(model);
-
-    // the same model as combobox
-  /*
-    ui->comboBoxBed->setModel(model);
-    ui->comboBoxBed->setModelColumn(2);
-    ui->comboBoxBed->modelColumn();
-
-*/
-
-
-    /*      SO GEHTS mit COMBOBOX und RELATION!
-     *     // **************************************************************************************
-    // relational table View for "dish"
-    modelMeal = new QSqlRelationalTableModel(this);
-    modelMeal->setTable("dish");
-    model->setSort(0, Qt::AscendingOrder);
-    modelMeal->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    modelMeal->setHeaderData(0, Qt::Horizontal, tr("ID"));
-    // 1 = colume with foregin key!
-    // stellt automatisch Wert von Foregin key dar!! course_id ... description!!!
-    modelMeal->setRelation(1, QSqlRelation("course", "course_id", "description"));
-    modelMeal->select();
-
-    tableViewMeal = new QTableView;
-    tableViewMeal->setColumnHidden(0, true);
-
-    tableViewMeal->setSelectionBehavior(QAbstractItemView::SelectRows);
-    tableViewMeal->resizeColumnsToContents();
-
-    ui->tableViewMeal->setModel(modelMeal);
-    // Das macht automatisch eine combo box, und zwar zu den QSqlRelations's !!
-    // was ist wenn es mehrere gibt?
-    ui->tableViewMeal->setItemDelegate(new QSqlRelationalDelegate(tableViewMeal));
-
-
-*/
-
-
-
-
-
-
-
-
-    /*
+     /*
 
     QSqlQuery query;
     query.exec("INSERT INTO employee (id, name, salary) "
@@ -248,6 +195,14 @@ void Restriction::on_pushButtonAddRecordDietReq_clicked()
 
     modelPatDietReq->insertRow(row);
 
+    QSqlRecord record = modelPatDietReq->record(row);
+
+    record.setValue("patient_id",2 );
+    record.setValue("dietary_req_id",2 );
+    modelPatDietReq->setRecord(row,record);
+
+    modelPatDietReq->submitAll();
+
 
     /*
     // access item in index(row,column,[parentindex])
@@ -257,13 +212,9 @@ void Restriction::on_pushButtonAddRecordDietReq_clicked()
     QModelIndex index = modelPatDietReq->index(row-1,0);
     QString id = index.data().toString();
     qDebug() << " patient_id: " << id;
-    //QSqlRecord record = model->record(row+1);
-    //record.setValue("patient_id", 1);
 
     qDebug() << " patient_id RECORD: " << row;
-
     //model->setRecord(row,record);
-
     modelPatDietReq->setData(model->index(row, 1), 1);
 */
     modelPatDietReq->submitAll();
